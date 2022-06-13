@@ -68,14 +68,14 @@ function encurtaUrl(url) {
 function geraHashAleatoria() {
   let hash = '';
   let caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  tamanhoHash = TamanhoRandom();
+  let tamanhoHash = tamanhoRandom();
   for (var i = 0; i < tamanhoHash; i++) {
     hash += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return hash;
 }
 
-function TamanhoRandom() {
+function tamanhoRandom() {
   const min = 5;
   const max = 7;
   return Math.floor(Math.random() * (max - min + 1)) + min;
