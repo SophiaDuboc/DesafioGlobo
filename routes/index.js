@@ -11,4 +11,24 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+/* GET page new Url. */
+router.get('/new', (req, res, next) => {
+  res.render('new', { title: 'Nova Url' });
+});
+
+
+/* POST new Url. */
+router.post('/new', async (req, res, next) => {
+  const url = req.body.url;
+ 
+  try {
+    const result = await global.db.insert({ "original":url, curta:"", sessao:"" });
+    console.log(result);
+    res.redirect('/');
+  } catch (err) {
+    next(err);
+  }
+})
+
+
 module.exports = router;
