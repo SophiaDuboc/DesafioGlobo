@@ -5,13 +5,28 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <ul>
+
+
+    <table  style="width:100%">
+      <tr>
+        <td>Url Original</td>
+        <td>Url Encurtada</td>
+        <td>Quantidade de acessos</td>
+        <td>Ação</td>
       <% docs.forEach(function(urls){ %>
-        <li>
-            <%= urls.original %>  <%= urls.sessao %>
-        </li>
+      <tr>
+        <td><%= urls.original %></td>
+        <td><%= urls.curta %></td>
+        <td><%= urls.acessos %></td>
+        <td>
+          <form action="/" method="POST">
+          <input hidden name="url" type="text" value=<%= urls.original %> >
+          <input type="submit" value="Excluir" />
+        </form>
+      </tr>
       <% }) %>
-    </ul>
+    </table>
+    <button onclick="window.location.href = '/new'">Nova Url</button>
+     
   </body>
 </html>
