@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const docs = await global.db.findAll();
-    res.render('index', { title: 'Lista de Clientes', docs });
+    res.render('index', { title: 'Lista de Urls', docs });
   } catch (err) {
     next(err);
   }
