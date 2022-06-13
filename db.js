@@ -7,8 +7,8 @@ function findAll() {
     return global.conn.collection("urls").find().toArray();
 }
 
-function insert(url) {
-    return global.conn.collection("urls").insertOne(url);
+function insert(urlOriginal, urlCurta) {
+    return global.conn.collection("urls").insertOne({ "original":urlOriginal, "curta":urlCurta, "acessos": 0});
 }
 
 function findOne(url){
@@ -18,7 +18,7 @@ function findOne(url){
 
 function updateAcessos(encurtador){
     qtdAcessos = encurtador.acessos + 1
-    return global.conn.collection("urls").update({"original": encurtador.original}, {$set:{"acessos": qtdAcessos}})
+    return global.conn.collection("urls").updateOne({"original": encurtador.original}, {$set:{"acessos": qtdAcessos}})
 }
 
 function deleteOne(url){
