@@ -16,7 +16,6 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   const url = req.body.url;
   try {
-    let original = encurtaUrl(url)
     const result = await global.db.deleteOne(url);
     console.log(result);
     res.redirect('/');
@@ -38,7 +37,7 @@ router.post('/new', async (req, res, next) => {
  
   try {
     let curta = encurtaUrl(url)
-    const result = await global.db.insert({ "original":url, curta:curta, sessao:"" });
+    const result = await global.db.insert(url, curta);
     console.log(result);
     res.redirect('/');
   } catch (err) {
@@ -62,12 +61,24 @@ router.get('/url/*', async (req, res, next) => {
 })
 
 function encurtaUrl(url) {
-  let hash = "teste" 
+  let hash = geraHashAleatoria()
   return "http://localhost:3000/url/" + hash
 }
 
+function geraHashAleatoria() {
+  let hash = '';
+  let caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  tamanhoHash = TamanhoRandom();
+  for (var i = 0; i < tamanhoHash; i++) {
+    hash += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return hash;
+}
 
-
-
+function TamanhoRandom() {
+  const min = 5;
+  const max = 7;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 module.exports = router;
