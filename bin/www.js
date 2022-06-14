@@ -6,6 +6,7 @@
 
 
 global.db = require('../db');
+global.baseUrl = "http://localhost:3000";
 var app = require('../app');
 var debug = require('debug')('desafioglobo:server');
 var http = require('http');

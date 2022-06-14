@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+
+/* /* /* /* /* /* /* /* /* /* /* /* /* HOME PAGE /* /* /* /* /* /* /* /* /* /* /* /*
+/* GET */
 router.get('/', async (req, res, next) => {
   try {
     const docs = await global.db.findAll();
@@ -12,10 +14,10 @@ router.get('/', async (req, res, next) => {
 })
 
 
-/* POST home page. */
+/* POST */
 router.post('/', async (req, res, next) => {
-  const url = req.body.url;
   try {
+    const url = req.body.url;
     const result = await global.db.deleteOne(url);
     console.log(result);
     res.redirect('/');
@@ -24,20 +26,19 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-
-/* GET page new Url. */
+/* /* /* /* /* /* /* /* /* /* /* /* /* PAGE NEW URL /* /* /* /* /* /* /* /* /* /* /* /*
+/* GET */
 router.get('/new', (req, res, next) => {
   res.render('new', { title: 'Nova Url' });
 });
 
 
-/* POST new Url. */
+/* POST */
 router.post('/new', async (req, res, next) => {
-  const url = req.body.url;
- 
   try {
-    let curta = encurtaUrl(url)
-    const result = await global.db.insert(url, curta);
+    const url = req.body.url;
+    let hash = getHash();
+    const result = await global.db.insert(url, hash);
     console.log(result);
     res.redirect('/');
   } catch (err) {
@@ -46,39 +47,41 @@ router.post('/new', async (req, res, next) => {
 })
 
 
-/* GET url encurtada. */
+/* /* /* /* /* /* /* /* /* /* /* /* /* PAGE URL ENCURTADA /* /* /* /* /* /* /* /* /* /* /* /*
+/* GET */
 router.get('/url/*', async (req, res, next) => {
   try {
-    const baseUrl = "http://localhost:3000"
-    const encurtador = (await global.db.findOne(baseUrl + req.url));
+    let hash = req.url.substring(5); // req.url = "/url/hash"
+    const encurtador = (await global.db.findOne(hash));
     global.db.updateAcessos(encurtador[0]);
 
     res.redirect(encurtador[0].original);
-    
   } catch (err) {
     next(err);
   }
 })
 
-function encurtaUrl(url) {
-  let hash = geraHashAleatoria()
-  return "http://localhost:3000/url/" + hash
+
+/* /* /* /* /* /* /* /* /* /* /* /* /* GERADOR DE HASH /* /* /* /* /* /* /* /* /* /* /* */
+/*TODO: Arrumar imports de outros arquivos para colocar essas funções na pasta src */
+function getHash() {
+  let tamanhoHash = tamanhoAletorio();
+  return geraHashAleatoria(tamanhoHash);
 }
 
-function geraHashAleatoria() {
+function geraHashAleatoria(tamanhoHash) {
   let hash = '';
   let caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let tamanhoHash = tamanhoRandom();
   for (var i = 0; i < tamanhoHash; i++) {
     hash += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
   }
   return hash;
 }
 
-function tamanhoRandom() {
-  const min = 5;
-  const max = 7;
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function tamanhoAletorio() {
+  const tamanhoMinimoHash = 5;
+  const tamanhoMaximoHash = 7;
+  return Math.floor(Math.random() * (tamanhoMaximoHash - tamanhoMinimoHash + 1)) + tamanhoMinimoHash;
 }
 
 module.exports = router;
