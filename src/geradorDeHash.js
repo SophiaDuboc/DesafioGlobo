@@ -1,4 +1,4 @@
-
+/*TODO: Arrumar imports de outros arquivos para poder importar e usar estas funções */
 
  function geraHash() {
     let tamanhoHash = tamanhoAletorio();

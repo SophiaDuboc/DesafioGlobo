@@ -3,35 +3,37 @@ mongoClient.connect("mongodb+srv://admin:admin@encurtadorurl.iu8f1.mongodb.net/?
             .then(conn => global.conn = conn.db("encurtador"))
             .catch(err => console.log(err));
 
+const collectionName = "urls";
+
 function findAll() {
-    return global.conn.collection("urls").find().toArray();
+    return global.conn.collection(collectionName).find().toArray();
 }
 
 function insert(urlOriginal, hash) {
-    return global.conn.collection("urls").insertOne({ "original":urlOriginal, "hash":hash, "acessos": 0});
+    return global.conn.collection(collectionName).insertOne({ "original":urlOriginal, "hash":hash, "acessos": 0});
 }
 
-function findOne(find){
-    let search = getSearch(find);
-    return (global.conn.collection("urls").find(search).toArray());
+function findOne(filter){
+    let search = defineSearch(filter);
+    return (global.conn.collection(collectionName).find(search).toArray());
 }
 
 function updateAcessos(encurtador){
-    qtdAcessos = encurtador.acessos + 1;
-    return global.conn.collection("urls").updateOne({"original": encurtador.original}, {$set:{"acessos": qtdAcessos}});
+    let qtdAcessos = encurtador.acessos + 1;
+    return global.conn.collection(collectionName).updateOne({"original": encurtador.original}, {$set:{"acessos": qtdAcessos}});
 }
 
-function deleteOne(find){
-    let search = getSearch(find);
-    global.conn.collection("urls").deleteOne(search);
+function deleteOne(filter){
+    let search = defineSearch(filter);
+    global.conn.collection(collectionName).deleteOne(search);
 }
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* FUNÇÕES AUXILIARES /* /* /* /* /* /* /* /* /* /* /* */
-function getSearch(find){
-    if(find.includes("http")){
-        var search = {"original": find } 
+function defineSearch(filter){
+    if(filter.includes("http")){
+        var search = {"original": filter } 
     }else{
-        var search = {"hash": find }
+        var search = {"hash": filter }
     }
     return search;
 }
