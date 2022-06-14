@@ -25,7 +25,7 @@ function updateAcessos(encurtador){
 
 function deleteOne(filter){
     let search = defineSearch(filter);
-    global.conn.collection(collectionName).deleteOne(search);
+    return global.conn.collection(collectionName).deleteOne(search);
 }
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* FUNÇÕES AUXILIARES /* /* /* /* /* /* /* /* /* /* /* */
