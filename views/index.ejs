@@ -5,8 +5,6 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-
-
     <table  style="width:100%">
       <tr>
         <td>Url Original</td>
@@ -16,7 +14,7 @@
       <% docs.forEach(function(urls){ %>
       <tr>
         <td><%= urls.original %></td>
-        <td><%= urls.curta %></td>
+        <td> <%= global.baseUrl %>/url/<%= urls.hash %></td>
         <td><%= urls.acessos %></td>
         <td>
           <form action="/" method="POST">
