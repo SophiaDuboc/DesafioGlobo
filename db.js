@@ -1,12 +1,16 @@
 const mongoClient = require("mongodb").MongoClient;
-mongoClient.connect("mongodb+srv://admin:admin@encurtadorurl.iu8f1.mongodb.net/?retryWrites=true&w=majority")
+mongoClient.connect("mongodb://127.0.0.1:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000")
             .then(conn => global.conn = conn.db("encurtador"))
             .catch(err => console.log(err));
 
 const collectionName = "urls";
 
 function findAll() {
-    return global.conn.collection(collectionName).find().toArray();
+    try{
+        return global.conn.collection(collectionName).find().toArray();
+    }catch(e){
+        return[];
+    }
 }
 
 function insert(urlOriginal, hash) {
@@ -14,8 +18,12 @@ function insert(urlOriginal, hash) {
 }
 
 function findOne(filter){
-    let search = defineSearch(filter);
-    return (global.conn.collection(collectionName).find(search).toArray());
+    try{
+        let search = defineSearch(filter);
+        return (global.conn.collection(collectionName).find(search).toArray());
+    }catch(e){
+        return[];
+    }
 }
 
 function updateAcessos(encurtador){
