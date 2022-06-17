@@ -1,5 +1,5 @@
 const mongoClient = require("mongodb").MongoClient;
-mongoClient.connect("mongodb+srv://admin:admin@encurtadorurl.iu8f1.mongodb.net/?retryWrites=true&w=majority")
+mongoClient.connect("mongodb://127.0.0.1:27017/?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000")
             .then(conn => global.conn = conn.db("encurtador"))
             .catch(err => console.log(err));
 

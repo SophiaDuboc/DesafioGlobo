@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+    app:
+        image: dubocsophiap/nodejs-image-demo
+        container_name: nodejs-encurtador-url
+        ports:
+          - 3000:3000
+        network_mode: host
+    mongo:
+      image: mongo
+      container_name: mongo
+      restart: always
+      environment:
+            MONGO_INITDB_DATABASE: "encurtador"
+      ports:
+          - 27017:27017
