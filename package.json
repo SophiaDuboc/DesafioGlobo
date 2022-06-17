@@ -12,7 +12,8 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "mongodb": "^4.7.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.16"
   },
   "devDependencies": {
     "requirements": "^1.4.1",

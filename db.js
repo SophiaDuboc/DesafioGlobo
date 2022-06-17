@@ -6,11 +6,7 @@ mongoClient.connect("mongodb://127.0.0.1:27017/?serverSelectionTimeoutMS=5000&co
 const collectionName = "urls";
 
 function findAll() {
-    try{
         return global.conn.collection(collectionName).find().toArray();
-    }catch(e){
-        return[];
-    }
 }
 
 function insert(urlOriginal, hash) {
@@ -18,12 +14,8 @@ function insert(urlOriginal, hash) {
 }
 
 function findOne(filter){
-    try{
         let search = defineSearch(filter);
         return (global.conn.collection(collectionName).find(search).toArray());
-    }catch(e){
-        return[];
-    }
 }
 
 function updateAcessos(encurtador){

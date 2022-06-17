@@ -5,9 +5,8 @@ services:
         container_name: nodejs-encurtador-url
         ports:
           - 3000:3000
-        depends_on:
-          - db
-    mongodb:
+        network_mode: host
+    mongo:
       image: mongo
       container_name: mongo
       restart: always
