@@ -2,7 +2,7 @@ version: '3.4'
 services:
     app:
         image: dubocsophiap/nodejs-image-demo
-        container_name: nodejs-encurtador-url
+        container_name: nodejs-image-demo
         ports:
           - 3000:3000
         network_mode: host
