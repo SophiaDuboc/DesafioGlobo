@@ -1,3 +1,7 @@
+var MD5 = require("crypto-js/md5");
+const Base62Str = require("base62str").default;
+
+
 var express = require('express');
 var router = express.Router();
 
@@ -6,7 +10,7 @@ var router = express.Router();
 /* GET : Listar URLs*/
 router.get('/', async (req, res, next) => {
   try {
-    const docs = await global.db.findAll();
+    const docs = await db.findAll();
     res.render('index', { title: 'Lista de Urls', docs });
   } catch (err) {
     next(err);
@@ -19,7 +23,7 @@ router.post('/', async (req, res, next) => {
   try {
     const url = req.body.url;
     await validaExclusao(url);
-    const result = await global.db.deleteOne(url);
+    const result = await db.deleteOne(url);
     console.log(result);
     res.redirect('/');
     return;
@@ -41,8 +45,8 @@ router.post('/new', async (req, res, next) => {
   try {
     const url = req.body.url;
     await validaCriarUrl(url);
-    let hash = await getHash();
-    const result = await global.db.insert(url, hash);
+    let hash = geraHash(url);
+    const result = await db.insert(url, hash);
     console.log(result);
     res.redirect('/');
   } catch (err) {
@@ -56,8 +60,8 @@ router.post('/new', async (req, res, next) => {
 router.get('/url/*', async (req, res, next) => {
   try {
     let hash = req.url.substring(5); // req.url = "/url/hash"
-    const encurtador = (await global.db.findOne(hash));
-    global.db.updateAcessos(encurtador[0]);
+    const encurtador = (await db.findOne(hash));
+    db.updateAcessos(encurtador[0]);
 
     res.redirect(encurtador[0].original);
   } catch (err) {
@@ -68,54 +72,20 @@ router.get('/url/*', async (req, res, next) => {
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* GERADOR DE HASH /* /* /* /* /* /* /* /* /* /* /* */
 /*TODO: Arrumar imports de outros arquivos para colocar essas funções na pasta src */
-async function getHash() {
-  let tamanhoHash = tamanhoAletorio();
-  let hash = await geraHashAleatoria(tamanhoHash);
-  return hash;
+
+function geraHash(urlOriginal){
+  let md5Url = MD5(urlOriginal).toString().substring(0,3);
+  let md5DateNow = MD5(Date.now()).toString().substring(0,3);
+  const base62 = Base62Str.createInstance();  
+  return base62.encodeStr(md5Url+md5DateNow);
 }
 
-async function geraHashAleatoria(tamanhoHash) {
-  let numTentativa = 0;
-  do{
-    if (numTentativa > 5){
-      throw {"message": "Hash não gerada. Número de tentativas excedido. Tente novamente"};
-    }
-    numTentativa += 1;
-    var hash = await geraHash(tamanhoHash);
-  } while(await hashJaExiste(hash));
-
-  return hash;
-}
-
-async function geraHash(tamanhoHash){
-  let hash = '';
-  let caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (var i = 0; i < tamanhoHash; i++) {
-    hash += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-  }
-  return hash
-
-}
-
-async function hashJaExiste(hash){
-  const encurtador = (await global.db.findOne(hash));
-  if(encurtador.length > 0){
-    return true;
-  }
-  return false;
-}
-
-function tamanhoAletorio() {
-  const tamanhoMinimoHash = 5;
-  const tamanhoMaximoHash = 7;
-  return Math.floor(Math.random() * (tamanhoMaximoHash - tamanhoMinimoHash + 1)) + tamanhoMinimoHash;
-}
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* VALIDAÇÕES /* /* /* /* /* /* /* /* /* /* /* */
 /*TODO: Arrumar imports de outros arquivos para colocar essas funções na pasta src */
 
 async function validaExclusao(url){
-  const encurtador = (await global.db.findOne(url));
+  const encurtador = (await db.findOne(url));
   if(encurtador.length == 0){
     throw {"message": "Não existe URL para exclusão"};
   }
@@ -127,7 +97,7 @@ async function validaCriarUrl(url){
 }
 
 async function validaUrlExistente(url){
-  const encurtador = (await global.db.findOne(url));
+  const encurtador = (await db.findOne(url));
   if(encurtador.length > 0){
     throw {"message": "Url já existe"};
   }

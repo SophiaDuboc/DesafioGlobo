@@ -6,7 +6,9 @@
     "start": "npx nodemon ./bin/www"
   },
   "dependencies": {
+    "base62str": "^1.0.9",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.1.1",
     "debug": "~2.6.9",
     "ejs": "^3.1.8",
     "express": "~4.16.1",
