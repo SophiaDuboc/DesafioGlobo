@@ -10,8 +10,8 @@ let validacoes = require("../src/validacoes")
 /* GET : Listar URLs*/
 router.get('/', async (req, res, next) => {
   try {
-    const docs = await global.db.findAll();
-    res.render('index', { title: 'Lista de Urls', docs });
+    const allUrls = await global.db.findAll();
+    res.status(200).send(allUrls);
   } catch (err) {
     next(err);
   }
@@ -29,13 +29,14 @@ router.post('/', async (req, res, next) => {
     return;
     
   } catch (err) {
-    next(err);
+    res.status(500).send({"message": err.message});
   }
 })
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* PAGE NEW URL /* /* /* /* /* /* /* /* /* /* /* /*
 /* GET : mostra form para criar nova URL*/
 router.get('/new', (req, res, next) => {
+  res.status(200)
   res.render('new', { title: 'Nova Url' });
 });
 
@@ -49,7 +50,7 @@ router.post('/new', async (req, res, next) => {
     const result = await global.db.insert(url, hash, utils.getDateNow());
     res.redirect('/');
   } catch (err) {
-    next(err);
+    res.status(500).send({"message": err.message});
   }
 })
 
@@ -65,8 +66,10 @@ router.get('/url/*', async (req, res, next) => {
     res.redirect(encurtador[0].original);
     
   } catch (err) {
-    next(err);
+    console.log(res.body)
+    res.status(404).send(err.message);
   }
 })
+
 
 module.exports = router;

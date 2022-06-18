@@ -19,3 +19,6 @@ clean:
 	@sudo docker rm -f $(MONGO)
 	@sudo docker rmi $(IMAGE)
 	@sudo docker rmi $(MONGO)
+
+tests:
+	@newman run testes/newman/DesafioGlobo.postman_collection.json -e testes/newman/localhost.postman_environment.json
