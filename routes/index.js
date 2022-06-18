@@ -1,5 +1,6 @@
 var MD5 = require("crypto-js/md5");
 const Base62Str = require("base62str").default;
+const base62 = Base62Str.createInstance();
 
 
 var express = require('express');
@@ -10,7 +11,7 @@ var router = express.Router();
 /* GET : Listar URLs*/
 router.get('/', async (req, res, next) => {
   try {
-    const docs = await db.findAll();
+    const docs = await global.db.findAll();
     res.render('index', { title: 'Lista de Urls', docs });
   } catch (err) {
     next(err);
@@ -23,7 +24,7 @@ router.post('/', async (req, res, next) => {
   try {
     const url = req.body.url;
     await validaExclusao(url);
-    const result = await db.deleteOne(url);
+    const result = await global.db.deleteOne(url);
     console.log(result);
     res.redirect('/');
     return;
@@ -46,7 +47,7 @@ router.post('/new', async (req, res, next) => {
     const url = req.body.url;
     await validaCriarUrl(url);
     let hash = geraHash(url);
-    const result = await db.insert(url, hash);
+    const result = await global.db.insert(url, hash);
     console.log(result);
     res.redirect('/');
   } catch (err) {
@@ -60,8 +61,8 @@ router.post('/new', async (req, res, next) => {
 router.get('/url/*', async (req, res, next) => {
   try {
     let hash = req.url.substring(5); // req.url = "/url/hash"
-    const encurtador = (await db.findOne(hash));
-    db.updateAcessos(encurtador[0]);
+    const encurtador = (await global.db.findOne(hash));
+    global.db.updateAcessos(encurtador[0]);
 
     res.redirect(encurtador[0].original);
   } catch (err) {
@@ -74,10 +75,23 @@ router.get('/url/*', async (req, res, next) => {
 /*TODO: Arrumar imports de outros arquivos para colocar essas funções na pasta src */
 
 function geraHash(urlOriginal){
-  let md5Url = MD5(urlOriginal).toString().substring(0,3);
-  let md5DateNow = MD5(Date.now()).toString().substring(0,3);
-  const base62 = Base62Str.createInstance();  
-  return base62.encodeStr(md5Url+md5DateNow);
+  let hashUrl = geraHashUrl(urlOriginal);
+  let hashDate = geraHashDateNow(Date.now());
+
+  let hash = hashUrl + hashDate;
+  return hash;
+}
+
+function geraHashUrl(urlOriginal){
+  let md5Url = MD5(urlOriginal).toString().substring(0,4);
+  let url62 = base62.encodeStr(md5Url).substring(0,4);
+  return url62;
+}
+
+function geraHashDateNow(date){
+  let md5DateNow = MD5(Date.now()).toString().substring(0,4);
+  let dateNow62 = base62.encodeStr(md5DateNow).substring(0,4);
+  return dateNow62;
 }
 
 
@@ -85,7 +99,7 @@ function geraHash(urlOriginal){
 /*TODO: Arrumar imports de outros arquivos para colocar essas funções na pasta src */
 
 async function validaExclusao(url){
-  const encurtador = (await db.findOne(url));
+  const encurtador = (await global.db.findOne(url));
   if(encurtador.length == 0){
     throw {"message": "Não existe URL para exclusão"};
   }
@@ -97,7 +111,7 @@ async function validaCriarUrl(url){
 }
 
 async function validaUrlExistente(url){
-  const encurtador = (await db.findOne(url));
+  const encurtador = (await global.db.findOne(url));
   if(encurtador.length > 0){
     throw {"message": "Url já existe"};
   }
