@@ -1,21 +1,15 @@
-/*TODO: Arrumar imports de outros arquivos para poder importar e usar estas funções */
+var MD5 = require("crypto-js/md5");
 
- function geraHash() {
-    let tamanhoHash = tamanhoAletorio();
-    return geraHashAleatoria(tamanhoHash)
-  }
-  
-  function geraHashAleatoria(tamanhoHash) {
-    let hash = '';
-    let caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < tamanhoHash; i++) {
-      hash += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-    }
-    return hash;
-  }
-  
-  function tamanhoAletorio() {
-    const tamanhoMinimoHash = 5
-    const tamanhoMaximoHash = 7
-    return Math.floor(Math.random() * (tamanhoMaximoHash - tamanhoMinimoHash + 1)) + tamanhoMinimoHash;
-  }
+const Base62Str = require("base62str").default;
+const base62 = Base62Str.createInstance();
+
+function geraHash(urlOriginal){
+  let md5Url = MD5(urlOriginal).toString().substring(0,4);
+  let md5DateNow = MD5(Date.now()).toString().substring(0,4);
+
+  let hash = base62.encodeStr(md5Url+md5DateNow).substring(0,8);
+
+  return hash;
+}
+
+ module.exports = { geraHash }

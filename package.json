@@ -6,7 +6,10 @@
     "start": "npx nodemon ./bin/www"
   },
   "dependencies": {
+    "base62str": "^1.0.9",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.1.1",
+    "date-and-time": "^2.3.1",
     "debug": "~2.6.9",
     "ejs": "^3.1.8",
     "express": "~4.16.1",
@@ -14,9 +17,5 @@
     "mongodb": "^4.7.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.16"
-  },
-  "devDependencies": {
-    "requirements": "^1.4.1",
-    "typescript": "^4.7.3"
   }
 }
