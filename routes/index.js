@@ -27,7 +27,7 @@ router.post('/', async (req, res, next) => {
     const url = req.body.url;
     await validacoes.validaExclusao(url);
     const result = await global.db.deleteOne(url);
-    return result
+    res.send(result);
   } catch (err) {
     res.status(500).send({"message": err.message});
   }

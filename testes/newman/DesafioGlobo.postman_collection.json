@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "b013236d-33b7-42ab-9799-2a0024344a1b",
-		"name": "DesafioGlobo",
+		"name": "Desafio_Globo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -13,17 +13,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
 							"pm.test(\"Check Array\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array')",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array')",
 							"});",
 							"",
 							"pm.test(\"Array Vazio\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array').that.is.empty;",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array').that.is.empty;",
 							"});"
 						],
 						"type": "text/javascript"
@@ -50,12 +50,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 500\", function () {",
-							"  pm.response.to.have.status(500);",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"",
+							"pm.test(\"Check json\", function () {",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('object')",
 							"});",
 							"",
 							"pm.test(\"Check message\", function () {",
-							"  var message = pm.response.json().message;",
-							"  pm.expect(message).contain(\"URL não é válida\");",
+							"    var message = pm.response.json().message;",
+							"    pm.expect(message).contain(\"URL não é válida\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -92,17 +97,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
 							"pm.test(\"Check Array\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array')",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array')",
 							"});",
 							"",
 							"pm.test(\"Array Vazio\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array').that.is.empty;",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array').that.is.empty;",
 							"});"
 						],
 						"type": "text/javascript"
@@ -129,19 +134,18 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Check Array\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array')",
+							"pm.test(\"Check json\", function () {",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('object')",
 							"});",
 							"",
-							"pm.test(\"Array Vazio\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array').that.is.not.empty;",
+							"pm.test(\"Deletou\", function () {",
+							"    var message = (pm.response.json()).acknowledged;",
+							"    pm.expect(message).equals(true);",
 							"});",
-							"",
 							"",
 							""
 						],
@@ -179,12 +183,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 500\", function () {",
-							"  pm.response.to.have.status(500);",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"",
+							"pm.test(\"Check json\", function () {",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('object')",
 							"});",
 							"",
 							"pm.test(\"Check message\", function () {",
-							"  var message = pm.response.json().message;",
-							"  pm.expect(message).contain(\"Url já existe\");",
+							"    var message = pm.response.json().message;",
+							"    pm.expect(message).contain(\"Url já existe\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -221,17 +230,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
 							"pm.test(\"Check Array\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array')",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array')",
 							"});",
 							"",
 							"pm.test(\"Array Vazio\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array').that.is.not.empty;",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('array').that.is.not.empty;",
 							"});"
 						],
 						"type": "text/javascript"
@@ -258,17 +267,17 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 200\", function () {",
-							"  pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Check Array\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array')",
+							"pm.test(\"Check json\", function () {",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('object')",
 							"});",
 							"",
-							"pm.test(\"Array Vazio\", function () {",
-							"  var message = pm.response.json();",
-							"  pm.expect(message).to.be.an('array').that.is.empty;",
+							"pm.test(\"Deletou\", function () {",
+							"    var message = (pm.response.json()).acknowledged;",
+							"    pm.expect(message).equals(true);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -305,12 +314,18 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status 500\", function () {",
-							"  pm.response.to.have.status(500);",
+							"     pm.response.to.have.status(500);",
 							"});",
 							"",
+							"pm.test(\"Check json\", function () {",
+							"    var message = pm.response.json();",
+							"    pm.expect(message).to.be.an('object')",
+							"});",
+							"",
+							"",
 							"pm.test(\"Check message\", function () {",
-							"  var message = pm.response.json().message;",
-							"  pm.expect(message).contain(\"Não existe URL para exclusão\");",
+							"    var message = pm.response.json().message;",
+							"    pm.expect(message).contain(\"Não existe URL para exclusão\");",
 							"});"
 						],
 						"type": "text/javascript"
