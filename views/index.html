@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alunos Front</title>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <h1>Lista de URLs</h1>
+    <table id="urls">
+      <thead>
+        <tr>
+          <td>Url Original</td>
+          <td>Url Encurtada</td>
+          <td>Quantidade de acessos</td>
+          <td>Ação</td>
+        </tr>
+      </thead>
+      <tbody>
+        <script>
+          axios.get('http://localhost:3000/')
+            .then(response => criaListaDinamica(response.data))
+            .catch(error => console.log(error))
+          const criaListaDinamica = ( urls ) => {
+            const ulUrls = document.getElementById('urls')
+            console.log(ulUrls)
+            urls.map(url => {
+              const listaUrl = document.createElement('tr')
+              listaUrl.innerHTML = `<td>${url.original}</td>
+                                    <td>http://localhost:3000/url/${url.hash}</td>
+                                    <td>${url.acessos}</td>
+                                    <td>
+                                      <form action="http://localhost:3000/" method="post">
+                                        <input hidden name="url" type="text" value="${url.original}" >
+                                        <button type="submit">Excluir</button>
+                                      </form>
+                                    </td>`
+              ulUrls.appendChild(listaUrl)
+            })
+          }
+        </script>
+      </tbody>
+    </table>
+    <h1>Criar nova URL</h1>
+    <form action="http://localhost:3000/new" method="POST" >
+      <p>Url Original:<input type="text" name="url"/></p>
+      <input type="submit" value="Executar"/>
+    </form>
+    <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+            axios.post('http://localhost:3000/', formData)
+            .then((res)=>{
+              window.location.reload();
+            })
+            .catch((err) => {throw err}
+            );
+        });
+    </script>
+  </body>
+</html>

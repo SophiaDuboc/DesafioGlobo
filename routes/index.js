@@ -5,13 +5,16 @@ let gerador = require("../src/geradorDeHash")
 let utils = require("../src/utils")
 let validacoes = require("../src/validacoes")
 
+const cors = require('cors')
 
-/* /* /* /* /* /* /* /* /* /* /* /* /* HOME PAGE /* /* /* /* /* /* /* /* /* /* /* /*
+
+router.use(cors())
+
 /* GET : Listar URLs*/
-router.get('/', async (req, res, next) => {
+router.get('/', async function(req, res, next) {
   try {
     const allUrls = await global.db.findAll();
-    res.status(200).send(allUrls);
+    res.send(allUrls);
   } catch (err) {
     next(err);
   }
@@ -24,22 +27,11 @@ router.post('/', async (req, res, next) => {
     const url = req.body.url;
     await validacoes.validaExclusao(url);
     const result = await global.db.deleteOne(url);
-    console.log(result);
-    res.redirect('/');
-    return;
-    
+    return result
   } catch (err) {
     res.status(500).send({"message": err.message});
   }
 })
-
-/* /* /* /* /* /* /* /* /* /* /* /* /* PAGE NEW URL /* /* /* /* /* /* /* /* /* /* /* /*
-/* GET : mostra form para criar nova URL*/
-router.get('/new', (req, res, next) => {
-  res.status(200)
-  res.render('new', { title: 'Nova Url' });
-});
-
 
 /* POST : cria nova URL */
 router.post('/new', async (req, res, next) => {
@@ -48,7 +40,8 @@ router.post('/new', async (req, res, next) => {
     await validacoes.validaCriarUrl(url);
     let hash = gerador.geraHash(url);
     const result = await global.db.insert(url, hash, utils.getDateNow());
-    res.redirect('/');
+    res.send(result);
+
   } catch (err) {
     res.status(500).send({"message": err.message});
   }
@@ -70,6 +63,5 @@ router.get('/url/*', async (req, res, next) => {
     res.status(404).send(err.message);
   }
 })
-
 
 module.exports = router;
