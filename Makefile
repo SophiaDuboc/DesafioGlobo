@@ -1,11 +1,15 @@
 ACCOUNT := dubocsophiap
-SERVICE := nodejs-image-demo
-IMAGE := $(ACCOUNT)/$(SERVICE)
+SERVICE_FRONT := front-encurtador
+SERVICE_BACK := back-encurtador
+IMAGE_FRONT := $(ACCOUNT)/$(SERVICE_FRONT)
+IMAGE_BACK := $(ACCOUNT)/$(SERVICE_BACK)
 MONGO := mongo
  
 setup:
-	@sudo docker build -t $(IMAGE) .
+	@sudo docker build -t $(IMAGE_BACK) .
+	@sudo docker build -t $(IMAGE_FRONT) ./views
 	@sudo docker pull $(MONGO)
+
  
 run:
 	@sudo docker compose -f app.yml up -d
