@@ -1,27 +1,7 @@
 # Desafio Globo
 
-**Instruções de setup**
+**Instruções de uso**
 
-Para fazer o setup, faça realize os seguintes comandos:
-
-```
-mkdir /opt/globo/
-```
-```
-cd /op/globo/
-```
-```
-git clone https://github.com/SophiaDuboc/DesafioGlobo.git
-```
-```
-cd DesafioGlobo/
-```
-```
-make setup
-```
-```
-make run
-```
 Após o setup realizado, vá no seu navegador de preferência e acesse: http://localhost:8080/
 
 Você verá uma site como este:
