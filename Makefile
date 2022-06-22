@@ -28,5 +28,8 @@ push-images:
 	@sudo docker push $(IMAGE_FRONT)
 	@sudo docker push $(IMAGE_BACK)
 
-test-newman:
+test-api:
 	@newman run tests/newman/DesafioGlobo.postman_collection.json -e tests/newman/localhost.postman_environment.json
+
+test-performance:
+	@newman run tests/newman/Performance.postman_collection.json -e tests/newman/localhost.postman_environment.json -n $(ntests)

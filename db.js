@@ -47,10 +47,11 @@ function deleteOne(filter){
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* FUNÇÃO AUXILIAR /* /* /* /* /* /* /* /* /* /* /* */
 function defineSearch(filter){
+    let search;
     if(utils.isUrl(filter)){
-        var search = {"original": filter };
+        search = {"original": filter };
     }else{
-        var search = {"hash": filter };
+        search = {"hash": filter };
     }
     return search;
 }
