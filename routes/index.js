@@ -13,7 +13,7 @@ const EXCLUIR = "Excluir"
 router.use(cors())
 
 /* GET : Listar URLs*/
-router.get('/', async function(req, res, next) {
+router.get('/', async function(req, res) {
   try {
     const result = await global.db.findAll();
     res.send(result);
@@ -23,18 +23,18 @@ router.get('/', async function(req, res, next) {
 })
 
 /* POST : cria/deleta nova URL */
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
   try {
     const url = req.body.url;
     const acao = req.body.acao;
-
+    let result;
     if (acao == ENCURTAR){
       await validacoes.validaCriarUrl(url);
-      var result = await criaUrl(url);
+      result = await criaUrl(url);
     }
     else if(acao == EXCLUIR){
       await validacoes.validaExclusao(url);
-      var result = await deletaUrl(url);
+      result = await deletaUrl(url);
     }
     else{
       res.status(400).send({"message": "Ação inválida"});
@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
 async function criaUrl(url){
 
   let hash = gerador.geraHash(url);
-  const result = await global.db.insert(url, hash, utils.getDateNow());
+  await global.db.insert(url, hash, utils.getDateNow());
 
   let urlCriada = global.baseUrl + "/" + hash;
 
@@ -59,14 +59,13 @@ async function criaUrl(url){
 }
 
 async function deletaUrl(url){
-    const result = await global.db.deleteOne(url);
-    return result;
+    return await global.db.deleteOne(url);
 }
 
 
 /* /* /* /* /* /* /* /* /* /* /* /* /* REDIRECT /* /* /* /* /* /* /* /* /* /* /* /*
 /* GET : Redireciona para URL original*/
-router.get('/*', async (req, res, next) => {
+router.get('/*', async (req, res) => {
   try {
     let hash = req.url.substring(1); /*  req.url = "/hash"  */
     let encurtador = (await global.db.findOne(hash));

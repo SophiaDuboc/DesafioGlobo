@@ -84,5 +84,3 @@ Não tentei aprender ferramentas novas, pois sabia que isso poderia me custar ma
 - Agora que estou escrevendo essa parte, penso que existe a possibilidade de eu entregar com um bug no front. Torçam para que eu consiga resolver a tempo!
 
 - Arrumado o front, o back, o teste integrado, não pretendo mexer novamente nas respostas da API e a forma como ela se comporta, então vou começar a escrever os testes funcionais e unitários. (Não, ainda não arrumei o bug do front 😞)
-
- 

@@ -7,7 +7,7 @@ MONGO := mongo
  
 setup:
 	@sudo docker build -t $(IMAGE_BACK) .
-	@sudo docker build -t $(IMAGE_FRONT) ./views
+	@sudo docker build -t $(IMAGE_FRONT) ./public
 	@sudo docker pull $(MONGO)
 
 run:
