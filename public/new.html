@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Criar nova URL</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  </head>
+  <body>
+    <img src="images/logo-globo.png"/>
+      <div>
+        <form id="encurtador" style="display: true" action="http://localhost:3000/" method="POST" >
+          <label for="encurtar">O encurtador de URLs da Globo.com</label></br>
+          <input class="input-copy" type="text" id="encurtar" name="url" placeholder="Insira URL para encurtar" /><br>
+          <p id="demo"></p>
+          <input class="input-copy" name="acao" type="submit" value="Encurtar"/>
+          <button class="redirect" onclick="window.location.href = '/'">Listar Urls</button>
+        </form>
+      </div>
+    <script>
+      const form = document.querySelector("form");
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+            const formData = new FormData(form);
+            formData.append("acao","Encurtar")
+            axios.post('http://localhost:3000/', new URLSearchParams(formData))
+              .then(response => criaRespostaSucesso(response.data))
+              .catch(error => criaRespostaErro(error))
+            const criaRespostaSucesso = ( encurtada ) => {
+              p = document.getElementById("demo")
+              p.innerHTML = "Url criada com sucesso: " + encurtada.urlCriada
+              document.getElementById('encurtar').value='';
+            };
+            const criaRespostaErro = ( erro ) => {
+              p = document.getElementById("demo")
+              p.innerHTML = "Erro: Url inválida ou já existe." 
+            };
+          });
+    </script>
+  </body>
+</html>

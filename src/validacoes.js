@@ -4,7 +4,7 @@ let utils = require("../src/utils");
 async function validaExclusao(url){
     const encurtador = (await global.db.findOne(url));
     if(isUndefined(encurtador[0])){
-      throw {"message": "Não existe URL para exclusão"};
+      throw "Não existe URL para exclusão";
     }
   }
   
@@ -16,20 +16,20 @@ async function validaExclusao(url){
   async function validaUrlExistente(url){
     const encurtador = (await global.db.findOne(url));
     if(isNotUndefined(encurtador[0])){
-      throw {"message": "Url já existe"};
+      throw "Url já existe";
     }
   }
 
   function validaUrl(url) {
     let isUrl = utils.isUrl(url);
     if (!isUrl){
-      throw {"message": "URL não é válida"};
+      throw "URL não é válida";
     }
   }
 
   function validaRedirect(encurtador) {
     if(isUndefined(encurtador)){
-      throw {"message": "URL não existe"};
+      throw "URL não existe";
     }
   }
 

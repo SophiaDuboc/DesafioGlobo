@@ -2,6 +2,7 @@ version: '3.4'
 services:
   front:
     image: dubocsophiap/front-encurtador
+    container_name: front-encurtador
     environment:
       STAGE: local
     ports:

@@ -53,13 +53,9 @@
 							"    pm.response.to.have.status(500);",
 							"});",
 							"",
-							"pm.test(\"Check json\", function () {",
-							"    var message = pm.response.json();",
-							"    pm.expect(message).to.be.an('object')",
-							"});",
-							"",
 							"pm.test(\"Check message\", function () {",
 							"    var message = pm.response.json().message;",
+							"    console.log(message)",
 							"    pm.expect(message).contain(\"URL não é válida\");",
 							"});"
 						],
@@ -77,13 +73,23 @@
 							"key": "url",
 							"value": "{{url_invalida}}",
 							"type": "default"
+						},
+						{
+							"key": "acao",
+							"value": "{{acao_encurtar}}",
+							"type": "default"
 						}
-					]
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{base_url}}{{insert_url}}",
+					"raw": "{{base_url}}",
 					"host": [
-						"{{base_url}}{{insert_url}}"
+						"{{base_url}}"
 					]
 				}
 			},
@@ -142,9 +148,10 @@
 							"    pm.expect(message).to.be.an('object')",
 							"});",
 							"",
-							"pm.test(\"Deletou\", function () {",
-							"    var message = (pm.response.json()).acknowledged;",
-							"    pm.expect(message).equals(true);",
+							"pm.test(\"Criou\", function () {",
+							"    var message = (pm.response.json()).urlCriada;",
+							"    console.log(message)",
+							"    pm.expect(message).contain(\"localhost\");",
 							"});",
 							"",
 							""
@@ -163,13 +170,18 @@
 							"key": "url",
 							"value": "{{url_1}}",
 							"type": "default"
+						},
+						{
+							"key": "acao",
+							"value": "{{acao_encurtar}}",
+							"type": "default"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}{{insert_url}}",
+					"raw": "{{base_url}}",
 					"host": [
-						"{{base_url}}{{insert_url}}"
+						"{{base_url}}"
 					]
 				}
 			},
@@ -210,13 +222,18 @@
 							"key": "url",
 							"value": "{{url_1}}",
 							"type": "default"
+						},
+						{
+							"key": "acao",
+							"value": "{{acao_encurtar}}",
+							"type": "default"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}{{insert_url}}",
+					"raw": "{{base_url}}",
 					"host": [
-						"{{base_url}}{{insert_url}}"
+						"{{base_url}}"
 					]
 				}
 			},
@@ -294,6 +311,11 @@
 							"key": "url",
 							"value": "{{url_1}}",
 							"type": "default"
+						},
+						{
+							"key": "acao",
+							"value": "{{acao_excluir}}",
+							"type": "default"
 						}
 					]
 				},
@@ -341,6 +363,11 @@
 						{
 							"key": "url",
 							"value": "{{url_1}}",
+							"type": "default"
+						},
+						{
+							"key": "acao",
+							"value": "{{acao_excluir}}",
 							"type": "default"
 						}
 					]

@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lista de URLs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  </head>
+  <body>
+   <img src="images/logo-globo.png"/>
+      <div id="listar">
+        <ul class="separator" id="urls">
+            <script>
+              axios.get('http://localhost:3000/')
+                .then(response => criaListaDinamica(response.data))
+                .catch(error => console.log(error))
+              const criaListaDinamica = ( urls ) => {
+                const ulUrls = document.getElementById('urls');
+                urls.map(url => {
+                  const div = document.createElement('div');
+                  const listaUrl = document.createElement('li');
+                  listaUrl.innerHTML = `<b type="curta" >http://localhost:3000/${url.hash} </b>
+                                                <sup type="acessos">  ${url.acessos} acessos </sup>
+                                                <br>${url.original}
+                                                <form action="http://localhost:3000/" method="post">
+                                                <input hidden name="url" value="${url.original}" >
+                                                <input name="acao" type="submit" value="Excluir"/>
+                                                <p id="demo"></p>
+                                              </form>`
+                                              div.appendChild(listaUrl);
+                                              ulUrls.appendChild(div);
+                })
+
+              }
+            </script>
+        </ul>
+        <button class="redirect" onclick="window.location.href = '/new'">Criar nova URL</button>
+      </div>
+     <script>
+      const form = document.querySelector("form");
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+              const formData = new FormData(form);
+              formData.append("acao","Excluir")
+              axios.post('http://localhost:3000/', new URLSearchParams(formData))
+                .then(response => criaRespostaSucesso(response))
+                .catch(error => criaRespostaErro(error))
+              const criaRespostaSucesso = ( encurtada ) => {
+                document.getElementById("demo").innerHTML = "Url excluída com sucesso!"
+              };
+              const criaRespostaErro = ( erro ) => {
+                document.getElementById("demo").innerHTML =  "Url já foi excluída." 
+              };
+            });
+      </script>
+  </body>
+</html>
