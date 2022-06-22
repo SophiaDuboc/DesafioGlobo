@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lista de URLs</title>
+    <title>Encurtador de URLs</title>
 
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,8 +13,21 @@
   </head>
   <body>
    <img src="images/logo-globo.png"/>
-      <div id="listar">
+   <div>
+
+    <form id="encurtador" style="display: true" action="http://localhost:3000/" method="POST" >
+      <label for="encurtar">O encurtador de URLs da Globo.com</label></br><p>
+      <input type="text" id="encurtar" name="url" placeholder="Insira URL para encurtar" /><br>
+      <p id="demo"></p>
+      <input hidden name="acao" value="Encurtar"/>
+      <input class="input-copy" type="submit" value="Encurtar"/>
+    </form>
+  </div>
+  <hr>
+  <div>
+    <label for="encurtar">Listagem das URLs encurtadas</label></br><p>
         <ul class="separator" id="urls">
+          <button class="redirect" onclick="window.location.href = '/'">Atualizar</button>
             <script>
               axios.get('http://localhost:3000/')
                 .then(response => criaListaDinamica(response.data))
@@ -34,27 +47,29 @@
                                               </form>`
                                               div.appendChild(listaUrl);
                                               ulUrls.appendChild(div);
+                                              
                 })
 
               }
             </script>
         </ul>
-        <button class="redirect" onclick="window.location.href = '/new'">Criar nova URL</button>
       </div>
-     <script>
-      const form = document.querySelector("form");
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
+      <script>
+        const form = document.querySelector("form");
+          form.addEventListener("submit", (e) => {
+            e.preventDefault();
               const formData = new FormData(form);
-              formData.append("acao","Excluir")
               axios.post('http://localhost:3000/', new URLSearchParams(formData))
-                .then(response => criaRespostaSucesso(response))
+                .then(response => criaRespostaSucesso(response.data))
                 .catch(error => criaRespostaErro(error))
               const criaRespostaSucesso = ( encurtada ) => {
-                document.getElementById("demo").innerHTML = "Url excluída com sucesso!"
+                p = document.getElementById("demo")
+                p.innerHTML = "Url criada com sucesso: " + encurtada.urlCriada
+                document.getElementById('encurtar').value='';
               };
               const criaRespostaErro = ( erro ) => {
-                document.getElementById("demo").innerHTML =  "Url já foi excluída." 
+                p = document.getElementById("demo")
+                p.innerHTML = "Erro: Url inválida ou já existe." 
               };
             });
       </script>
