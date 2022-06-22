@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npx nodemon ./bin/www",
-    "eslint": "npx eslint ./routes/index.js ./src/geradorDeHash.js ./src/utils.js ./src/validacoes.js"
+    "eslint": "npx eslint ./routes/index.js ./src/geradorDeHash.js ./src/utils.js ./src/validacoes.js ./db.js"
   },
   "dependencies": {
     "base62str": "^1.0.9",
