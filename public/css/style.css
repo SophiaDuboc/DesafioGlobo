@@ -1,0 +1,113 @@
+@font-face {
+  font-family: "trebuc";
+  src: url('../font/trebuc.ttf');
+}
+
+body {
+  margin: 5%;
+  font-family: "trebuc";
+}
+
+input[type=text], select {
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #dce0e7;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #dce0e7;
+  font-weight: bold;
+}
+
+input[type=submit] {
+  width: 20;
+  background-color: #dce0e7;
+  color: #24272b;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #086ad9;
+}
+
+div {
+  border-radius: 5px;
+  padding: 20px;
+}
+
+sup[type=acessos] {
+  color:#b3b6bb
+}
+
+b[type=curta] {
+  color: #086ad9;
+}
+
+ul.separator {
+	list-style: none;
+	padding: 0;
+	width: 80%;
+}
+
+ul.separator li {
+	padding: .5em 0;
+	border-bottom: 1px solid #CCC;
+}
+
+ul.separator li:last-child {
+	border-bottom: 0;
+}
+
+i[class="fas fa-file"]{
+  font-size:170%;
+  color: white;
+  align-self: center;
+}
+
+button[class="btn"] {
+  width: 20px;
+  margin: 0px 20px 20px;
+  background-color: #086ad9;
+  color: white;
+  margin: 0px 95%;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+}
+
+button[class=redirect] {
+  width: 20;
+  background-color: #086ad9;
+  color: white;
+  padding: 10px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+div[id="copy"] {
+  padding: 0 10px;
+  color: white;
+  font-weight: bold;
+  width: 72%;
+  margin: 0px 20px 10px;
+  display: inline-block;
+  background-color: #086ad9;
+  
+}
+
+p[id="demo"] {
+  color: #086ad9;
+  font-size: 12px;
+
+}

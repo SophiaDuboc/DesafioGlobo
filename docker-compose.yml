@@ -1,0 +1,26 @@
+version: '3.4'
+services:
+  front:
+    image: dubocsophiap/front-encurtador
+    container_name: front-encurtador
+    environment:
+      STAGE: local
+    ports:
+      - 8080:80
+    restart: always
+  app:
+    image: dubocsophiap/back-encurtador
+    container_name: back-encurtador
+    ports:
+      - 3000:3000
+    network_mode: host
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+          MONGO_INITDB_DATABASE: "encurtador"
+    ports:
+        - 27017:27017

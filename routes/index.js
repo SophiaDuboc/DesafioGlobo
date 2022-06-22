@@ -5,67 +5,77 @@ let gerador = require("../src/geradorDeHash")
 let utils = require("../src/utils")
 let validacoes = require("../src/validacoes")
 
+const cors = require('cors')
+const ENCURTAR = "Encurtar"
+const EXCLUIR = "Excluir"
 
-/* /* /* /* /* /* /* /* /* /* /* /* /* HOME PAGE /* /* /* /* /* /* /* /* /* /* /* /*
+
+router.use(cors())
+
 /* GET : Listar URLs*/
-router.get('/', async (req, res, next) => {
+router.get('/', async function(req, res, next) {
   try {
-    const docs = await global.db.findAll();
-    res.render('index', { title: 'Lista de Urls', docs });
+    const result = await global.db.findAll();
+    res.send(result);
   } catch (err) {
-    next(err);
+    res.status(500).send({"message": err.message});
   }
 })
 
-
-/* POST : Deletar URL*/
+/* POST : cria/deleta nova URL */
 router.post('/', async (req, res, next) => {
   try {
     const url = req.body.url;
-    await validacoes.validaExclusao(url);
+    const acao = req.body.acao;
+
+    if (acao == ENCURTAR){
+      await validacoes.validaCriarUrl(url);
+      var result = await criaUrl(url);
+    }
+    else if(acao == EXCLUIR){
+      await validacoes.validaExclusao(url);
+      var result = await deletaUrl(url);
+    }
+    else{
+      res.status(400).send({"message": "Ação inválida"});
+    }
+
+    res.send(result);
+
+  } catch (err) {
+    res.status(500).send({"message": err});
+  }
+})
+
+async function criaUrl(url){
+
+  let hash = gerador.geraHash(url);
+  const result = await global.db.insert(url, hash, utils.getDateNow());
+
+  let urlCriada = global.baseUrl + "/" + hash;
+
+  return {"urlCriada": urlCriada};
+ 
+}
+
+async function deletaUrl(url){
     const result = await global.db.deleteOne(url);
-    console.log(result);
-    res.redirect('/');
-    return;
-    
-  } catch (err) {
-    next(err);
-  }
-})
-
-/* /* /* /* /* /* /* /* /* /* /* /* /* PAGE NEW URL /* /* /* /* /* /* /* /* /* /* /* /*
-/* GET : mostra form para criar nova URL*/
-router.get('/new', (req, res, next) => {
-  res.render('new', { title: 'Nova Url' });
-});
+    return result;
+}
 
 
-/* POST : cria nova URL */
-router.post('/new', async (req, res, next) => {
-  try {
-    const url = req.body.url;
-    await validacoes.validaCriarUrl(url);
-    let hash = gerador.geraHash(url);
-    const result = await global.db.insert(url, hash, utils.getDateNow());
-    res.redirect('/');
-  } catch (err) {
-    next(err);
-  }
-})
-
-
-/* /* /* /* /* /* /* /* /* /* /* /* /* PAGE URL ENCURTADA /* /* /* /* /* /* /* /* /* /* /* /*
+/* /* /* /* /* /* /* /* /* /* /* /* /* REDIRECT /* /* /* /* /* /* /* /* /* /* /* /*
 /* GET : Redireciona para URL original*/
-router.get('/url/*', async (req, res, next) => {
+router.get('/*', async (req, res, next) => {
   try {
-    let hash = req.url.substring(5); /*  req.url = "/url/hash"  */
+    let hash = req.url.substring(1); /*  req.url = "/hash"  */
     let encurtador = (await global.db.findOne(hash));
     validacoes.validaRedirect(encurtador[0]);
     global.db.updateAcessos(encurtador[0], utils.getDateNow());
     res.redirect(encurtador[0].original);
     
   } catch (err) {
-    next(err);
+    res.status(404).send(err);
   }
 })
 
